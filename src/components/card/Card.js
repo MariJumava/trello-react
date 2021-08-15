@@ -3,45 +3,47 @@ import PropTypes from "prop-types";
 import { User } from "../../types/User";
 import { Label } from "../../types/Label";
 import "./Card.css";
+import Estimate from "./components/estimate/Estimate";
+import LabelComponent from "./components/label/LabelComponent";
+import AssignedUser from "./components/assignedUser/AssignedUser";
 
-const Card = () => {
+const Card = (props) => {
   return (
     <div className="card-wrap">
       <header className="card-header">
-        <h2 className="card-title">USB</h2>
-        <div className="card-date">{getTime()}</div>
-        <div className="card-estimate"></div>
+        <div className="vertical-line"></div>
+        <h3 className="card-title">{props.header}</h3>
+        <div className="date-wrap">
+          <div className="card-date">
+            {props.dateCreated.toLocaleString("ru", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              timezone: "UTC",
+            })}
+          </div>
+          <span className="header-date-separator"> | </span>
+          <div className="card-estimate">
+            <Estimate text={props.estimate} />
+          </div>
+        </div>
       </header>
-      <div className="card-user">{User}</div>
+      {props.labels.map((label) => {
+        return <LabelComponent key={label.id} label={label} />;
+      })}
+      <div className="card-user">
+        <AssignedUser user={props.assignedUser} />
+      </div>
     </div>
   );
 };
 
-// eslint-disable-next-line react/no-typos
-Card.PropTypes = {
+Card.propTypes = {
   header: PropTypes.string,
-  dateCreated: PropTypes.instanceOf(),
+  dateCreated: PropTypes.instanceOf(Date),
   estimate: PropTypes.string,
   assignedUser: PropTypes.instanceOf(User),
   labels: PropTypes.arrayOf(Label),
-};
-
-const getTime = () => {
-  let year = new Date().getFullYear();
-  let month = new Date().getMonth() + 1;
-  if (month < 10) {
-    month = "0" + month;
-  }
-  let day = new Date().getDate();
-  let hours = new Date().getHours();
-  if (hours < 10) {
-    hours = "0" + hours;
-  }
-  let minutes = new Date().getMinutes();
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
-  return `${day}/${month}/${year} ${hours}:${minutes}`;
 };
 
 export default Card;

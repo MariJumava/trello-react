@@ -1,19 +1,47 @@
 .card-wrap {
     display: flex;
-    align-items: flex-start;
-    width: 250px;
-    height: 200px;
-    margin: 50px auto;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 150px;
+    min-height: 100px;
+    margin: 20px auto;
+    padding: 15px;
+    position: relative;
     border: 1px solid rgb(146, 144, 144);
-    border-radius: 5%;
+    border-radius: 3%;
+}
+
+.vertical-line::before {
+    position: absolute;
+    left: 0;
+    top: 20px;
+    content: " ";
+    background: blue;
+    width: 2px;
+    height: 30px;
 }
 
 .card-title {
-    font-size: 25px;
-    padding: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 13px;
+    margin: 3px 0;
 }
 
-.card-date {
-    font-size: 15px;
+.date-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10px;
     color: gray;
+}
+
+.header-date-separator {
+    padding: 0px 5px;
+}
+
+.card-user {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 7px;
+    border-radius: 50%;
 }
