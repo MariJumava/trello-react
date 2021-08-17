@@ -5,6 +5,7 @@ import { User } from "./types/User";
 import "./App.css";
 import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
+//import Context from "./context";
 
 const App = () => {
   const [showButton, setShowButton] = useState(true);
@@ -24,11 +25,7 @@ const App = () => {
       header: "Create a Card",
       dateCreated: new Date(2021, 7, 23),
       estimate: "15h",
-      assignedUser: new User(
-        1,
-        "Mari",
-        "https://avatars.mds.yandex.net/get-kino-vod-films-gallery/28788/47e2fd514411e18b76af786d7417062d/600x380"
-      ),
+      assignedUser: new User(1, "Mari", "https://www.flaticon.com/free-icon/avatar_194938"),
       labels: [new Label("102,255,102", "WEB LAYOUT"), new Label("0,102,102", "QA")],
     },
   ];
@@ -45,19 +42,38 @@ const App = () => {
     setShowButton(true);
   };
 
+  // я нашла видео для инпута только у меня это не сработало(((
+  const createColumn = (title) => {
+    setColumns(
+      columns.concat([
+        {
+          // не могу понять что тут писать?
+          title: title,
+          completed: false,
+        },
+      ])
+    );
+  };
+  // eslint-disable-next-line no-unused-vars
+  const removeColum = (column) => {
+    setColumns(columns.filter((col) => col === !column));
+  };
+
   return (
+    //<Context.Provider value={{ removeColum }}>
     <div className="App">
       <div className="columns-wrap">
         {columns.map((column) => {
           return <Column key={column.id} cardValues={list} name={column.name} />;
         })}
+        {showButton ? (
+          <ColumnButton onClick={clickOnShowColunmButton} />
+        ) : (
+          <CreateColumn onClick={clickOnAddColumnButton} onCreate={createColumn} />
+        )}
       </div>
-      {showButton ? (
-        <ColumnButton onClick={clickOnShowColunmButton} />
-      ) : (
-        <CreateColumn onClick={clickOnAddColumnButton} />
-      )}
     </div>
+    //</Context.Provider>
   );
 };
 

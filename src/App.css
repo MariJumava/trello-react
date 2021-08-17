@@ -1,6 +1,6 @@
 .App {
-  text-align: center;
-  padding: 20px 30px;
+  padding: 50px 50px;
+  background-image: url(https://www.wallpapertip.com/wmimgs/92-922014_-2-.png);
 }
 
 .App-logo {
@@ -41,4 +41,5 @@
 .columns-wrap {
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
 }

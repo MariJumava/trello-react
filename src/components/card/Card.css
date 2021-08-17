@@ -10,6 +10,7 @@
     position: relative;
     border: 1px solid rgb(146, 144, 144);
     border-radius: 3%;
+    background-color: white;
 }
 
 .vertical-line::before {
@@ -26,6 +27,19 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 13px;
     margin: 3px 0;
+}
+
+.card-title-with-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete-card-btn {
+    border: none;
+    border-radius: 50%;
+    color: rgb(43, 43, 85);
+    background-color: rgb(191, 211, 230);
+
 }
 
 .date-wrap {

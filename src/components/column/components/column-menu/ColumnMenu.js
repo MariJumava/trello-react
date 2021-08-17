@@ -4,7 +4,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 const ColumnMenu = () => {
   return (
-    <div className="column-menu">
+    <div className="column-delete">
       <FontAwesomeIcon icon={faTrashAlt} />
     </div>
   );

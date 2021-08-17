@@ -12,7 +12,10 @@ const Card = (props) => {
     <div className="card-wrap">
       <header className="card-header">
         <div className="vertical-line"></div>
-        <h3 className="card-title">{props.header}</h3>
+        <div className="card-title-with-btn">
+          <h3 className="card-title">{props.header}</h3>
+          <button className="delete-card-btn">&times;</button>
+        </div>
         <div className="date-wrap">
           <div className="card-date">
             {props.dateCreated.toLocaleString("ru", {

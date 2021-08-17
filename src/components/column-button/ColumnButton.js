@@ -1,4 +1,5 @@
 import React from "react";
+import "./ColumnButton.css";
 
 const ColumnButton = ({ onClick }) => {
   return (
