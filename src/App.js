@@ -5,19 +5,22 @@ import { User } from "./types/User";
 import "./App.css";
 import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
-//import Context from "./context";
+import CreateCard from "./components/createCard/CreateCard";
 
 const App = () => {
   const [showButton, setShowButton] = useState(true);
   const [columns, setColumns] = useState([]);
+  const [cards, setCards] = useState([]);
+  const [showCard, setShowCard] = useState(false);
 
   const cardValues = {
     header: "Create a Card",
     dateCreated: new Date(2021, 7, 23),
     estimate: "15h",
-    assignedUser: new User(1, "Mari", ""),
     labels: [new Label("102,255,102", "WEB LAYOUT")],
+    assignedUser: new User(1, "Mari", "https://www.flaticon.com/free-icon/avatar_194938"),
   };
+  //переделать в стейт по аналогии с columns
   const list = [
     cardValues,
     cardValues,
@@ -25,7 +28,7 @@ const App = () => {
       header: "Create a Card",
       dateCreated: new Date(2021, 7, 23),
       estimate: "15h",
-      assignedUser: new User(1, "Mari", "https://www.flaticon.com/free-icon/avatar_194938"),
+      assignedUser: new User(2, "Mark", "https://www.flaticon.com/free-icon/avatar_194938"),
       labels: [new Label("102,255,102", "WEB LAYOUT"), new Label("0,102,102", "QA")],
     },
   ];
@@ -42,38 +45,48 @@ const App = () => {
     setShowButton(true);
   };
 
-  // я нашла видео для инпута только у меня это не сработало(((
-  const createColumn = (title) => {
-    setColumns(
-      columns.concat([
-        {
-          // не могу понять что тут писать?
-          title: title,
-          completed: false,
-        },
-      ])
-    );
-  };
-  // eslint-disable-next-line no-unused-vars
-  const removeColum = (column) => {
-    setColumns(columns.filter((col) => col === !column));
+  const removeColum = (id) => {
+    setColumns(columns.filter((col) => col.id !== id));
   };
 
+  const openCreateCard = () => {
+    setShowCard(true);
+  };
+
+  //всю функцию прокидывать в дочерние компоненты до самого save который находится в CreateCard
+  const addCard = (card) => {
+    if (cards.length < 10 && card) {
+      cards.push(card);
+      setCards(cards);
+    }
+    setShowCard(false);
+  };
+  //изменяем стейт для значения showCard
+  //логика на обновление стейта list где добавляется в массив новое значение из параметра card(по аналогии с columns)
+
   return (
-    //<Context.Provider value={{ removeColum }}>
     <div className="App">
       <div className="columns-wrap">
+        {showCard ? <CreateCard addCard={addCard} /> : null}
         {columns.map((column) => {
-          return <Column key={column.id} cardValues={list} name={column.name} />;
+          return (
+            <Column
+              key={column.id}
+              id={column.id}
+              cardValues={list}
+              name={column.name}
+              removeColumn={removeColum}
+              openCreateCard={openCreateCard}
+            />
+          );
         })}
         {showButton ? (
           <ColumnButton onClick={clickOnShowColunmButton} />
         ) : (
-          <CreateColumn onClick={clickOnAddColumnButton} onCreate={createColumn} />
+          <CreateColumn onClick={clickOnAddColumnButton} />
         )}
       </div>
     </div>
-    //</Context.Provider>
   );
 };
 

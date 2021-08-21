@@ -1,5 +1,6 @@
 .card-labels {
     width: fit-content;
+    margin-right: 10px;
     padding: 0 5px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 7px;

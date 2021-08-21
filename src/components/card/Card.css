@@ -54,6 +54,11 @@
     padding: 0px 5px;
 }
 
+.card-label-wrap {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .card-user {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 7px;

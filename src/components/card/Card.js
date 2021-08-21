@@ -31,9 +31,11 @@ const Card = (props) => {
           </div>
         </div>
       </header>
-      {props.labels.map((label) => {
-        return <LabelComponent key={label.id} label={label} />;
-      })}
+      <div className="card-label-wrap">
+        {props.labels.map((label) => {
+          return <LabelComponent key={label.id} label={label} />;
+        })}
+      </div>
       <div className="card-user">
         <AssignedUser user={props.assignedUser} />
       </div>

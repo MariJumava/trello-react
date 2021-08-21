@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { uniqueId } from "lodash";
 import "./CreateColumn.css";
 
-const CreateColumn = ({ onClick, onCreate }) => {
+const CreateColumn = ({ onClick }) => {
   const [value, setValue] = useState("");
   const addColumn = () => {
     let column = {
-      id: 1,
-      name: "", //достать из input
+      id: uniqueId(),
+      name: value,
     };
     onClick(column);
   };
@@ -15,25 +16,15 @@ const CreateColumn = ({ onClick, onCreate }) => {
     onClick();
   };
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-    if (value.trim()) {
-      onCreate(value);
-      setValue("");
-    }
-  };
-
   return (
     <div className="column-form">
-      <form onSubmit={submitHandler}>
-        <input type="text" value={value} onChange={(event) => setValue(event.target.value)} />
-        <button className="add-column-btn" onClick={addColumn}>
-          Add Column
-        </button>
-        <button className="close-form-btn" onClick={closeForm}>
-          &times;
-        </button>
-      </form>
+      <input type="text" value={value} onChange={(event) => setValue(event.target.value)} />
+      <button className="add-column-btn" onClick={addColumn}>
+        Add Column
+      </button>
+      <button className="close-form-btn" onClick={closeForm}>
+        &times;
+      </button>
     </div>
   );
 };

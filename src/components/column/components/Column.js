@@ -11,6 +11,10 @@ const Column = (props) => {
         <ColumnHeader
           header={props.name}
           cardCount={props.cardValues ? props.cardValues.length : 0}
+          removeColumn={() => {
+            props.removeColumn(props.id);
+          }}
+          openCreateCard={props.openCreateCard}
         />
       </div>
       <div className="list-cards">
