@@ -21,6 +21,7 @@ const App = () => {
     assignedUser: new User(1, "Mari", "https://www.flaticon.com/free-icon/avatar_194938"),
   };
   //переделать в стейт по аналогии с columns
+  //const [list, setList] = useState([]);
   const list = [
     cardValues,
     cardValues,
@@ -53,7 +54,6 @@ const App = () => {
     setShowCard(true);
   };
 
-  //всю функцию прокидывать в дочерние компоненты до самого save который находится в CreateCard
   const addCard = (card) => {
     if (cards.length < 10 && card) {
       cards.push(card);
@@ -61,8 +61,6 @@ const App = () => {
     }
     setShowCard(false);
   };
-  //изменяем стейт для значения showCard
-  //логика на обновление стейта list где добавляется в массив новое значение из параметра card(по аналогии с columns)
 
   return (
     <div className="App">

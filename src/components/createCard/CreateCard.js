@@ -1,7 +1,8 @@
 import { uniqueId } from "lodash";
 import React, { useState } from "react";
+import "./CreateCard.css";
 
-const CreateCard = ({ columnName, onClick, addCard }) => {
+const CreateCard = ({ columnName, addCard }) => {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
   const saveCard = () => {
@@ -10,33 +11,36 @@ const CreateCard = ({ columnName, onClick, addCard }) => {
       name: value,
       description: description,
     };
-    onClick(card);
+    addCard(card);
   };
 
   const closeCardModal = () => {
-    onClick();
+    addCard();
   };
-  //создать объект кард и заполнить его значениями из инпутов
-  //вызвать функции из App (придет в props)
 
   return (
     <div className="create-card-wrap">
       <div className="create-card-description-wrap">
-        <input type="text" value={value} onChange={(event) => setValue(event.target.value)} />
+        <input
+          className="create-card-input"
+          type="text"
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+        />
+        <button className="close-card-modal-btn" onClick={closeCardModal}>
+          &times;
+        </button>
         <span className="create-card-column-notation">In column {columnName}</span>
-        <h4 className="create-card-title-description">Description</h4>
+        <h4 className="create-card-title-description">Description:</h4>
         <textarea
           className="create-card-description"
           description={description}
           onChange={(event) => setDescription(event.target.description)}
         />
-        <button className="create-card-save-btn" onChange={addCard} onClick={saveCard}>
+        <button className="create-card-save-btn" onClick={saveCard}>
           Save
         </button>
       </div>
-      <button className="close-card-modal-btn" onClick={closeCardModal}>
-        &times;
-      </button>
     </div>
   );
 };

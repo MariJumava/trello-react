@@ -18,7 +18,12 @@ const CreateColumn = ({ onClick }) => {
 
   return (
     <div className="column-form">
-      <input type="text" value={value} onChange={(event) => setValue(event.target.value)} />
+      <input
+        className="column-form-input"
+        type="text"
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
+      />
       <button className="add-column-btn" onClick={addColumn}>
         Add Column
       </button>
