@@ -1,5 +1,6 @@
 import { uniqueId } from "lodash";
 import React, { useState } from "react";
+import { User } from "../../types/User";
 import "./CreateCard.css";
 
 const CreateCard = ({ columnName, addCard }) => {
@@ -8,8 +9,12 @@ const CreateCard = ({ columnName, addCard }) => {
   const saveCard = () => {
     let card = {
       id: uniqueId(),
-      name: value,
+      header: value,
       description: description,
+      dateCreated: new Date(),
+      labels: [],
+      assignedUser: new User(1, "Mari", "https://image.flaticon.com/icons/png/512/194/194938.png"),
+      estimate: "5h",
     };
     addCard(card);
   };

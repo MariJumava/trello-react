@@ -15,12 +15,11 @@
     font-weight: 800;
     color: #fff;
     background: rgb(230, 231, 247, 0.1);
-    border-radius: 2px;
     border: none;
 }
 
 .close-form-btn {
-    width: 40%;
+    width: 49%;
     padding: 0.3em;
     font-size: calc(6px + 1vw);
     font-weight: 800;

@@ -10,18 +10,12 @@ const Navigator = () => {
   return (
     <Router>
       <div>
-        
         <Switch>
-          <Route path="/about">
-            <About />
+          <Route path="/login">
+            <Login />
           </Route>
-
-          <Route path="/users">
-            <Users />
-          </Route>
-
           <Route path="/">
-            <Home />
+            <App />
           </Route>
         </Switch>
       </div>

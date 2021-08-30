@@ -1,5 +1,6 @@
 .App {
-  padding: 50px 50px;
+  min-height: 920px;
+  padding: 80px 50px;
   background-image: url(https://oboi247.ru/img/post/t-17/0.jpg);
 }
 
@@ -35,6 +36,5 @@
 
 .columns-wrap {
   display: flex;
-  flex-direction: row;
   justify-content: space-evenly;
 }

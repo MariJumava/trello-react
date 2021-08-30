@@ -1,38 +1,20 @@
 import React, { useState } from "react";
 import Column from "./components/column/components/Column";
-import { Label } from "./types/Label";
-import { User } from "./types/User";
 import "./App.css";
 import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
 import CreateCard from "./components/createCard/CreateCard";
+import OpenCard from "./components/openCard/OpenCard";
+import Login from "./components/login/Login";
 
 const App = () => {
   const [showButton, setShowButton] = useState(true);
   const [columns, setColumns] = useState([]);
   const [cards, setCards] = useState([]);
-  const [showCard, setShowCard] = useState(false);
-
-  const cardValues = {
-    header: "Create a Card",
-    dateCreated: new Date(2021, 7, 23),
-    estimate: "15h",
-    labels: [new Label("102,255,102", "WEB LAYOUT")],
-    assignedUser: new User(1, "Mari", "https://www.flaticon.com/free-icon/avatar_194938"),
-  };
-  //переделать в стейт по аналогии с columns
-  //const [list, setList] = useState([]);
-  const list = [
-    cardValues,
-    cardValues,
-    {
-      header: "Create a Card",
-      dateCreated: new Date(2021, 7, 23),
-      estimate: "15h",
-      assignedUser: new User(2, "Mark", "https://www.flaticon.com/free-icon/avatar_194938"),
-      labels: [new Label("102,255,102", "WEB LAYOUT"), new Label("0,102,102", "QA")],
-    },
-  ];
+  const [showCreateCardModal, setShowCreateCardModal] = useState(false);
+  const [createCardColumnId, setCreateCardColumnId] = useState(null);
+  const [showOpenCard, setShowOpenCard] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState(null);
 
   const clickOnShowColunmButton = () => {
     setShowButton(false);
@@ -50,31 +32,64 @@ const App = () => {
     setColumns(columns.filter((col) => col.id !== id));
   };
 
-  const openCreateCard = () => {
-    setShowCard(true);
+  const openCreateCard = (columnId) => {
+    setShowCreateCardModal(true);
+    setCreateCardColumnId(columnId);
   };
 
   const addCard = (card) => {
-    if (cards.length < 10 && card) {
+    if (cards.length < 6 && card) {
+      card.columnId = createCardColumnId;
       cards.push(card);
       setCards(cards);
     }
-    setShowCard(false);
+    setShowCreateCardModal(false);
   };
+
+  const removeCard = (id) => {
+    setCards(cards.filter((c) => c.id !== id));
+  };
+
+  const openCard = (cardId) => {
+    setShowOpenCard(true);
+    setSelectedCardId(cardId);
+  };
+
+  const closeOpenCard = () => {
+    setShowOpenCard(false);
+  };
+
+  const getSelectedCard = () => cards.filter((x) => x.id === selectedCardId)[0];
 
   return (
     <div className="App">
+      <Login />
       <div className="columns-wrap">
-        {showCard ? <CreateCard addCard={addCard} /> : null}
+        {showOpenCard ? (
+          <OpenCard
+            card={getSelectedCard()}
+            columnName={columns.filter((x) => x.id === selectedCardId().columnId)[0].columnName}
+            closeOpenCard={closeOpenCard}
+            cardName={cards.filter((x) => x.id === selectedCardId)[0].header}
+          />
+        ) : null}
+        {showCreateCardModal ? (
+          <CreateCard
+            addCard={addCard}
+            columnName={columns.filter((x) => x.id === createCardColumnId)[0].name}
+          />
+        ) : null}
         {columns.map((column) => {
           return (
             <Column
               key={column.id}
               id={column.id}
-              cardValues={list}
+              cardValues={cards.filter((x) => x.columnId === column.id)}
               name={column.name}
               removeColumn={removeColum}
               openCreateCard={openCreateCard}
+              removeCard={removeCard}
+              openCard={openCard}
             />
           );
         })}

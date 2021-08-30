@@ -1,9 +1,8 @@
 .column-wrap {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
     width: 250px;
+    height: fit-content;
     background-color: rgb(230, 231, 247, 0.3);
 }
 

@@ -8,9 +8,16 @@
     margin: 1.5em auto;
     padding: 1em;
     position: relative;
-    border: 1px solid rgb(146, 144, 144);
+    border: 2px solid rgb(62, 50, 75);
     border-radius: 3%;
+    cursor: grab;
     background-color: white;
+    /* transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out; */
+}
+
+.card-wrap:hover {
+    border-color: #5a08b8;
+    transform: translateY(-5px) rotateZ(3deg);
 }
 
 .vertical-line::before {
@@ -35,6 +42,7 @@
 }
 
 .delete-card-btn {
+    max-height: 20px;
     font-size: calc(1px + 1vw);
     font-weight: 500;
     border: none;
@@ -62,8 +70,3 @@
     justify-content: flex-start;
 }
 
-.card-user {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: calc(2px + 0.6vw);
-    border-radius: 50%;
-}
