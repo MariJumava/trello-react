@@ -1,0 +1,59 @@
+.open-card-wrap{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    transition: all 0.5s ease;
+    z-index: 8000;
+}
+
+.open-card-description-wrap {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    z-index: 9000;
+    flex-direction: column;
+    justify-content: center;
+    width: 33%;
+    padding: 1.2em;
+    background: #f2f6fa;
+    border: #d2defb 2px solid;
+}
+
+.open-card-title {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: calc(5px + 1vw);;
+    font-weight: 600;
+}
+
+.close-open-card-btn {
+    width: 7%;
+    margin-left: 2.7em;
+    padding: 0.3em;
+    font-size: calc(3px + 1vw);
+    font-weight: 700;
+    border: none;
+    border-radius: 20%;
+    color: white;
+    background-color: rgb(120, 132, 145);
+}
+
+.open-card-column-notation {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: calc(4px + 1vw);
+    font-weight: 400;
+}
+
+.open-card-title-description {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: calc(4px + 1vw);
+    font-weight: 600;
+}
+
+.open-card-description {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: calc(3px + 1vw);;
+    font-weight: 400;
+}

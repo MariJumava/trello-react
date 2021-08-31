@@ -1,11 +1,7 @@
 .App {
-  text-align: center;
-  padding: 20px 30px;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  min-height: 920px;
+  padding: 80px 50px;
+  background-image: url(https://oboi247.ru/img/post/t-17/0.jpg);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -40,5 +36,5 @@
 
 .columns-wrap {
   display: flex;
-  flex-direction: row;
+  justify-content: space-evenly;
 }

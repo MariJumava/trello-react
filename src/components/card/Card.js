@@ -7,15 +7,25 @@ import Estimate from "./components/estimate/Estimate";
 import LabelComponent from "./components/label/LabelComponent";
 import AssignedUser from "./components/assignedUser/AssignedUser";
 
-const Card = (props) => {
+const Card = ({ header, dateCreated, estimate, labels, assignedUser, removeCard, openCard }) => {
+  const clickOnRemoveButton = (e) => {
+    e.stopPropagation();
+    removeCard();
+  };
+
   return (
-    <div className="card-wrap">
+    <div className="card-wrap" onClick={openCard}>
       <header className="card-header">
         <div className="vertical-line"></div>
-        <h3 className="card-title">{props.header}</h3>
+        <div className="card-title-with-btn">
+          <h3 className="card-title">{header}</h3>
+          <button className="delete-card-btn" onClick={clickOnRemoveButton}>
+            &times;
+          </button>
+        </div>
         <div className="date-wrap">
           <div className="card-date">
-            {props.dateCreated.toLocaleString("ru", {
+            {dateCreated.toLocaleString("ru", {
               year: "numeric",
               month: "numeric",
               day: "numeric",
@@ -24,16 +34,17 @@ const Card = (props) => {
           </div>
           <span className="header-date-separator"> | </span>
           <div className="card-estimate">
-            <Estimate text={props.estimate} />
+            <Estimate text={estimate} />
           </div>
         </div>
       </header>
-      {props.labels.map((label) => {
-        return <LabelComponent key={label.id} label={label} />;
-      })}
-      <div className="card-user">
-        <AssignedUser user={props.assignedUser} />
+      <div className="card-label-wrap">
+        {labels &&
+          labels.map((label) => {
+            return <LabelComponent key={label.id} label={label} />;
+          })}
       </div>
+      <AssignedUser user={assignedUser} />
     </div>
   );
 };

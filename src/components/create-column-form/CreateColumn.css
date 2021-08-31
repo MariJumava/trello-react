@@ -1,0 +1,29 @@
+.column-form {
+    width: 20%;
+    height: 20%;
+    background-color: rgb(230, 231, 247, 0.1);;
+}
+
+.column-form-input {
+    width: 96%;
+    font-size: calc(5px + 1vw);
+}
+
+.add-column-btn {
+    padding: 0.4em;
+    font-size: calc(3px + 1vw);
+    font-weight: 800;
+    color: #fff;
+    background: rgb(230, 231, 247, 0.1);
+    border: none;
+}
+
+.close-form-btn {
+    width: 49%;
+    padding: 0.3em;
+    font-size: calc(6px + 1vw);
+    font-weight: 800;
+    border: none;
+    color: white;
+    background: rgb(230, 231, 247, 0.1);
+}

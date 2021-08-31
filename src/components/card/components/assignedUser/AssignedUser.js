@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
+import "./AssignedUser.css";
 
 const AssignedUser = ({ user }) => {
   return (
     <div>
-      <image src={user.avatar} />
+      <img className="card-user" src={user.avatar} />
     </div>
   );
 };

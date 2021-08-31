@@ -5,43 +5,68 @@
     justify-content: space-between;
     width: 150px;
     min-height: 100px;
-    margin: 20px auto;
-    padding: 15px;
+    margin: 1.5em auto;
+    padding: 1em;
     position: relative;
-    border: 1px solid rgb(146, 144, 144);
+    border: 2px solid rgb(62, 50, 75);
     border-radius: 3%;
+    cursor: grab;
+    background-color: white;
+    /* transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out; */
+}
+
+.card-wrap:hover {
+    border-color: #5a08b8;
+    transform: translateY(-5px) rotateZ(3deg);
 }
 
 .vertical-line::before {
     position: absolute;
     left: 0;
-    top: 20px;
+    top: 1.3em;
     content: " ";
     background: blue;
     width: 2px;
-    height: 30px;
+    height: calc(10px + 1.7vw);
 }
 
 .card-title {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 13px;
-    margin: 3px 0;
+    font-size: calc(3px + 1vw);
+    margin: 0.2em 0;
+}
+
+.card-title-with-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete-card-btn {
+    max-height: 20px;
+    font-size: calc(1px + 1vw);
+    font-weight: 500;
+    border: none;
+    border-radius: 20%;
+    color: black;
+    background-color: rgb(120, 132, 145, 0.5);
+
 }
 
 .date-wrap {
     display: flex;
     flex-wrap: wrap;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 10px;
+    font-size: calc(2px + 0.7vw);
+    padding-top: 0.2em;
     color: gray;
 }
 
 .header-date-separator {
-    padding: 0px 5px;
+    padding: 0px 0.3em;
 }
 
-.card-user {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 7px;
-    border-radius: 50%;
+.card-label-wrap {
+    display: flex;
+    justify-content: flex-start;
 }
+

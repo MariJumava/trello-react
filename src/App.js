@@ -1,37 +1,20 @@
 import React, { useState } from "react";
 import Column from "./components/column/components/Column";
-import { Label } from "./types/Label";
-import { User } from "./types/User";
 import "./App.css";
 import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
+import CreateCard from "./components/createCard/CreateCard";
+import OpenCard from "./components/openCard/OpenCard";
+import Login from "./components/login/Login";
 
 const App = () => {
   const [showButton, setShowButton] = useState(true);
   const [columns, setColumns] = useState([]);
-
-  const cardValues = {
-    header: "Create a Card",
-    dateCreated: new Date(2021, 7, 23),
-    estimate: "15h",
-    assignedUser: new User(1, "Mari", ""),
-    labels: [new Label("102,255,102", "WEB LAYOUT")],
-  };
-  const list = [
-    cardValues,
-    cardValues,
-    {
-      header: "Create a Card",
-      dateCreated: new Date(2021, 7, 23),
-      estimate: "15h",
-      assignedUser: new User(
-        1,
-        "Mari",
-        "https://avatars.mds.yandex.net/get-kino-vod-films-gallery/28788/47e2fd514411e18b76af786d7417062d/600x380"
-      ),
-      labels: [new Label("102,255,102", "WEB LAYOUT"), new Label("0,102,102", "QA")],
-    },
-  ];
+  const [cards, setCards] = useState([]);
+  const [showCreateCardModal, setShowCreateCardModal] = useState(false);
+  const [createCardColumnId, setCreateCardColumnId] = useState(null);
+  const [showOpenCard, setShowOpenCard] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState(null);
 
   const clickOnShowColunmButton = () => {
     setShowButton(false);
@@ -45,18 +28,76 @@ const App = () => {
     setShowButton(true);
   };
 
+  const removeColum = (id) => {
+    setColumns(columns.filter((col) => col.id !== id));
+  };
+
+  const openCreateCard = (columnId) => {
+    setShowCreateCardModal(true);
+    setCreateCardColumnId(columnId);
+  };
+
+  const addCard = (card) => {
+    if (cards.length < 6 && card) {
+      card.columnId = createCardColumnId;
+      cards.push(card);
+      setCards(cards);
+    }
+    setShowCreateCardModal(false);
+  };
+
+  const removeCard = (id) => {
+    setCards(cards.filter((c) => c.id !== id));
+  };
+
+  const openCard = (cardId) => {
+    setShowOpenCard(true);
+    setSelectedCardId(cardId);
+  };
+
+  const closeOpenCard = () => {
+    setShowOpenCard(false);
+  };
+
+  const getSelectedCard = () => cards.filter((x) => x.id === selectedCardId)[0];
+
   return (
     <div className="App">
+      <Login />
       <div className="columns-wrap">
+        {showOpenCard ? (
+          <OpenCard
+            card={getSelectedCard()}
+            columnName={columns.filter((x) => x.id === selectedCardId().columnId)[0].columnName}
+            closeOpenCard={closeOpenCard}
+          />
+        ) : null}
+        {showCreateCardModal ? (
+          <CreateCard
+            addCard={addCard}
+            columnName={columns.filter((x) => x.id === createCardColumnId)[0].name}
+          />
+        ) : null}
         {columns.map((column) => {
-          return <Column key={column.id} cardValues={list} name={column.name} />;
+          return (
+            <Column
+              key={column.id}
+              id={column.id}
+              cardValues={cards.filter((x) => x.columnId === column.id)}
+              name={column.name}
+              removeColumn={removeColum}
+              openCreateCard={openCreateCard}
+              removeCard={removeCard}
+              openCard={openCard}
+            />
+          );
         })}
+        {showButton ? (
+          <ColumnButton onClick={clickOnShowColunmButton} />
+        ) : (
+          <CreateColumn onClick={clickOnAddColumnButton} />
+        )}
       </div>
-      {showButton ? (
-        <ColumnButton onClick={clickOnShowColunmButton} />
-      ) : (
-        <CreateColumn onClick={clickOnAddColumnButton} />
-      )}
     </div>
   );
 };

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import { uniqueId } from "lodash";
+import "./CreateColumn.css";
 
 const CreateColumn = ({ onClick }) => {
+  const [value, setValue] = useState("");
   const addColumn = () => {
     let column = {
-      id: 1,
-      name: "", //достать из input (почитать про управляемые компоненты)
+      id: uniqueId(),
+      name: value,
     };
     onClick(column);
   };
@@ -15,11 +18,18 @@ const CreateColumn = ({ onClick }) => {
 
   return (
     <div className="column-form">
-      <form>
-        <input type="text" />
-        <button onClick={addColumn}>Add Column</button>
-        <button onClick={closeForm}>X</button>
-      </form>
+      <input
+        className="column-form-input"
+        type="text"
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
+      />
+      <button className="add-column-btn" onClick={addColumn}>
+        Add Column
+      </button>
+      <button className="close-form-btn" onClick={closeForm}>
+        &times;
+      </button>
     </div>
   );
 };
