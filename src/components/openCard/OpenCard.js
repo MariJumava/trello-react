@@ -3,12 +3,12 @@ import AssignedUser from "../card/components/assignedUser/AssignedUser";
 import "./OpenCard.css";
 
 const OpenCard = ({ card, columnName, closeOpenCard }) => {
-  const { cardName, description, labels, assignedUser } = card;
+  const { header, description, labels, assignedUser } = card;
 
   return (
     <div className="open-card-wrap">
       <div className="open-card-description-wrap">
-        <h2 className="open-card-title">{cardName}</h2>
+        <h2 className="open-card-title">{header}</h2>
         <button className="close-open-card-btn" onClick={closeOpenCard}>
           &times;
         </button>

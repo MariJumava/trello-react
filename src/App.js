@@ -70,7 +70,6 @@ const App = () => {
             card={getSelectedCard()}
             columnName={columns.filter((x) => x.id === selectedCardId().columnId)[0].columnName}
             closeOpenCard={closeOpenCard}
-            cardName={cards.filter((x) => x.id === selectedCardId)[0].header}
           />
         ) : null}
         {showCreateCardModal ? (
