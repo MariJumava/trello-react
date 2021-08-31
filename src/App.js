@@ -5,7 +5,6 @@ import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
 import CreateCard from "./components/createCard/CreateCard";
 import OpenCard from "./components/openCard/OpenCard";
-import Login from "./components/login/Login";
 
 const App = () => {
   const [showButton, setShowButton] = useState(true);
@@ -63,12 +62,11 @@ const App = () => {
 
   return (
     <div className="App">
-      <Login />
       <div className="columns-wrap">
         {showOpenCard ? (
           <OpenCard
             card={getSelectedCard()}
-            columnName={columns.filter((x) => x.id === selectedCardId().columnId)[0].columnName}
+            columnName={columns.filter((x) => x.id === getSelectedCard().columnId)[0].name}
             closeOpenCard={closeOpenCard}
           />
         ) : null}
