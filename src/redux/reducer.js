@@ -1,30 +1,13 @@
-import { ACTION_TYPES } from "./consts/Consts.js";
+import { ACTION_TYPES } from "./Consts.js";
 
 const initialState = {
-  email: "",
-  password: "",
   user: {},
   loading: false,
+  authorized: false,
   error: "",
 };
 
 const reducer = (state = initialState, action) => {
-  if (action.type === ACTION_TYPES.CHANGE_EMAIL) {
-    return {
-      ...state,
-      email: action.payload,
-      error: state.error ? "" : state.error,
-    };
-  }
-
-  if (action.type === ACTION_TYPES.CHANGE_PASSWORD) {
-    return {
-      ...state,
-      password: action.payload,
-      error: "",
-    };
-  }
-
   if (action.type === ACTION_TYPES.LOGIN_START) {
     return {
       ...state,
@@ -37,13 +20,16 @@ const reducer = (state = initialState, action) => {
       ...state,
       user: action.payload,
       loading: false,
+      authorized: true,
     };
   }
 
   if (action.type === ACTION_TYPES.LOGIN_FAILURE) {
     return {
       ...state,
+      user: {},
       loading: false,
+      authorized: false,
       error: action.payload,
     };
   }

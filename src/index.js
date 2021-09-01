@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import "./index.css";
 import Navigator from "./navigation/Navigator.js";
-import reducer from "./reducer";
+import reducer from "./redux/reducer";
 
 ReactDOM.render(
   <React.StrictMode>

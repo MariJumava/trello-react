@@ -10,7 +10,6 @@ const Navigator = () => {
         <Route path="/login">
           <Login />
         </Route>
-
         <Route path="/">
           <App />
         </Route>
