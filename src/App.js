@@ -1,19 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Column from "./components/column/components/Column";
 import "./App.css";
 import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
 import CreateCard from "./components/createCard/CreateCard";
 import OpenCard from "./components/openCard/OpenCard";
+import HeaderApp from "./components/HeaderApp";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getColumns,
+  getColumnsFailure,
+  getColumnsSuccess,
+  postColumn,
+  postColumnFailure,
+} from "./redux/actions";
+import axios from "axios";
 
 const App = () => {
   const [showButton, setShowButton] = useState(true);
-  const [columns, setColumns] = useState([]);
+  const columns = useSelector((state) => state.columns);
   const [cards, setCards] = useState([]);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [createCardColumnId, setCreateCardColumnId] = useState(null);
   const [showOpenCard, setShowOpenCard] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const getColumnsAsync = async () => {
+    dispatch(getColumns());
+
+    const responce = await axios.get("http://localhost:3000/columns");
+
+    if (responce.status === 200) {
+      const columns = responce.data;
+      dispatch(getColumnsSuccess(columns));
+    } else {
+      dispatch(getColumnsFailure("ERROR"));
+    }
+  };
+
+  useEffect(() => {
+    try {
+      getColumnsAsync();
+    } catch (error) {
+      dispatch(getColumnsFailure("ERROR"));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const clickOnShowColunmButton = () => {
     setShowButton(false);
@@ -21,14 +55,29 @@ const App = () => {
 
   const clickOnAddColumnButton = (column) => {
     if (columns.length < 5 && column) {
-      columns.push(column);
-      setColumns(columns);
+      addColumnAsyncCall(column);
     }
     setShowButton(true);
   };
 
   const removeColum = (id) => {
-    setColumns(columns.filter((col) => col.id !== id));
+    //setColumns(columns.filter((col) => col.id !== id));
+  };
+
+  const addColumnAsyncCall = async (column) => {
+    try {
+      dispatch(postColumn());
+
+      const responce = await axios.post("http://localhost:3000/columns", column);
+
+      if (responce.status === 201) {
+        await getColumnsAsync();
+      } else {
+        dispatch(postColumnFailure("Oops!"));
+      }
+    } catch (err) {
+      dispatch(postColumnFailure("Oops!"));
+    }
   };
 
   const openCreateCard = (columnId) => {
@@ -62,6 +111,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <HeaderApp />
       <div className="columns-wrap">
         {showOpenCard ? (
           <OpenCard

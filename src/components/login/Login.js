@@ -3,12 +3,14 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import "./Login.css";
 import Loader from "./Loader";
-import { ACTION_TYPES } from "../../redux/Consts";
+import { Redirect } from "react-router-dom";
+import { loginFailure, loginStart, loginSuccess } from "../../redux/actions";
 
 const Login = () => {
+  const isAuthorized = useSelector((state) => state.authorized);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const error = useSelector(state => state.error);
+  const error = useSelector((state) => state.error);
 
   const dispatch = useDispatch();
 
@@ -20,37 +22,33 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
+  const clearForm = () => {
+    setEmail("");
+    setPassword("");
+  };
+
   const signIn = async () => {
     try {
-      dispatch({
-        type: ACTION_TYPES.LOGIN_START,
-      });
+      dispatch(loginStart());
 
       const responce = await axios.get("http://localhost:3000/users");
       const users = responce.data;
 
-      const loginUser = users.filter((x) => x.email == email);
-      if (loginUser && loginUser.password === password) {
-        dispatch({
-          type: ACTION_TYPES.LOGIN_SUCCESS,
-          payload: responce.loginUser,
-        });
+      const loginUser = users.filter((x) => x.email === email);
+      if (loginUser && loginUser.length > 0 && loginUser[0].password === password) {
+        dispatch(loginSuccess(loginUser[0]));
       } else {
-        dispatch({
-          type: ACTION_TYPES.LOGIN_FAILURE,
-          payload: "Wrong email or password.",
-        });
+        dispatch(loginFailure("Wrong email or password"));
       }
     } catch (err) {
       console.log("error", err);
-      dispatch({
-        type: ACTION_TYPES.LOGIN_FAILURE,
-        payload: "Something is wrong!",
-      });
+      dispatch(loginFailure("Something is wrong!"));
     }
   };
 
-  return (
+  return isAuthorized ? (
+    <Redirect to="/" />
+  ) : (
     <div className="login-wrap">
       <input
         className="login-email"
@@ -68,7 +66,7 @@ const Login = () => {
       />
       <span style={{ color: "red" }}>{error}</span>
       <div className="login-buttons">
-        <button className="login-clear-email-btn" onClick={() => signIn}>
+        <button className="login-clear-email-btn" onClick={clearForm}>
           Clear
         </button>
         <Loader onClick={signIn} />

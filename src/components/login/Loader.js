@@ -1,21 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import "./Loader.css";
 
-const Loader = () => {
-  const [loading, setLoading] = useState(false);
-  const [greeting, setGreeting] = useState("");
+const Loader = ({ onClick }) => {
+  const loading = useSelector((state) => state.loading);
 
   const showLoading = () => {
-    setTimeout(() => {
-      sayHi();
-    }, 2000);
-
-    setLoading(true);
-  };
-
-  const sayHi = () => {
-    setGreeting("Welcom, user!");
-    setLoading(false);
+    onClick();
   };
 
   return (
@@ -23,10 +14,7 @@ const Loader = () => {
       <button className="login-sign-in-btn" onClick={showLoading}>
         Sign In
       </button>
-      <div className="loader-wrap">
-        {loading && <div className="loader" />}
-        {greeting && <div>{greeting}</div>}
-      </div>
+      <div className="loader-wrap">{loading && <div className="loader" />}</div>
     </div>
   );
 };

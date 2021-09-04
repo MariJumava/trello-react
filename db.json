@@ -22,6 +22,23 @@
       "password": "5678"
     }
   ],
-  "columns": [],
+  "columns": [
+    {
+      "id": 4,
+      "name": "test column"
+    },
+    {
+      "id": "1",
+      "name": "sadasds"
+    },
+    {
+      "id": "2",
+      "name": "asdasdasd"
+    },
+    {
+      "id": "3",
+      "name": "sadasd"
+    }
+  ],
   "card": []
 }
