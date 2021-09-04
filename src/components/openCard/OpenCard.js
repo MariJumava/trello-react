@@ -8,10 +8,12 @@ const OpenCard = ({ card, columnName, closeOpenCard }) => {
   return (
     <div className="open-card-wrap">
       <div className="open-card-description-wrap">
-        <h2 className="open-card-title">{header}</h2>
-        <button className="close-open-card-btn" onClick={closeOpenCard}>
-          &times;
-        </button>
+        <div className="open-card-header">
+          <h2 className="open-card-title">{header}</h2>
+          <button className="close-open-card-btn" onClick={closeOpenCard}>
+            &times;
+          </button>
+        </div>
         <span className="open-card-column-notation">In column {columnName}</span>
         <h4 className="open-card-title-description">Description:</h4>
         <p className="open-card-description">{description}</p>

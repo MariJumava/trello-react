@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "mari@gmail.com",
+      "displayName": "Mari",
+      "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png",
+      "password": "1234"
+    },
+    {
+      "id": 2,
+      "email": "olga@gmail.com",
+      "displayName": "Olga",
+      "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png",
+      "password": "4321"
+    },
+    {
+      "id": 3,
+      "email": "bob@gmail.com",
+      "displayName": "Bob",
+      "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png",
+      "password": "5678"
+    }
+  ],
+  "columns": [
+    {
+      "id": 4,
+      "name": "test column"
+    },
+    {
+      "id": "1",
+      "name": "sadasds"
+    },
+    {
+      "id": "2",
+      "name": "asdasdasd"
+    },
+    {
+      "id": "3",
+      "name": "sadasd"
+    }
+  ],
+  "card": []
+}
