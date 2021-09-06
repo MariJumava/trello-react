@@ -18,27 +18,10 @@
       "id": 3,
       "email": "bob@gmail.com",
       "displayName": "Bob",
-      "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png",
+      "avatar": "http://pngimg.com/uploads/avatar/avatar_PNG50.png",
       "password": "5678"
     }
   ],
-  "columns": [
-    {
-      "id": 4,
-      "name": "test column"
-    },
-    {
-      "id": "1",
-      "name": "sadasds"
-    },
-    {
-      "id": "2",
-      "name": "asdasdasd"
-    },
-    {
-      "id": "3",
-      "name": "sadasd"
-    }
-  ],
-  "card": []
+  "columns": [],
+  "cards": []
 }

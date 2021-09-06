@@ -1,25 +1,40 @@
 import React, { useEffect, useState } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "./components/column/components/Column";
 import "./App.css";
 import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
 import CreateCard from "./components/createCard/CreateCard";
 import OpenCard from "./components/openCard/OpenCard";
-import HeaderApp from "./components/HeaderApp";
+import HeaderApp from "./components/headerApp/HeaderApp";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteCard,
+  deleteCardFailure,
+  deleteCardSuccess,
+  deleteColumn,
+  deleteColumnFailure,
+  deleteColumnSuccess,
   getColumns,
   getColumnsFailure,
   getColumnsSuccess,
+  postCardSuccess,
   postColumn,
   postColumnFailure,
+} from "./redux/actions";
+import {
+  getCards,
+  getCardsSuccess,
+  getCardsFailure,
+  postCard,
+  postCardFailure,
 } from "./redux/actions";
 import axios from "axios";
 
 const App = () => {
   const [showButton, setShowButton] = useState(true);
   const columns = useSelector((state) => state.columns);
-  const [cards, setCards] = useState([]);
+  const cards = useSelector((state) => state.cards);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [createCardColumnId, setCreateCardColumnId] = useState(null);
   const [showOpenCard, setShowOpenCard] = useState(false);
@@ -49,19 +64,37 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    try {
+      getCardsAsync();
+    } catch (error) {
+      dispatch(getCardsFailure("ERROR"));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getCardsAsync = async () => {
+    dispatch(getCards());
+
+    const responce = await axios.get("http://localhost:3000/cards");
+
+    if (responce.status === 200) {
+      const cards = responce.data;
+      dispatch(getCardsSuccess(cards));
+    } else {
+      dispatch(getCardsFailure("ERROR"));
+    }
+  };
+
   const clickOnShowColunmButton = () => {
     setShowButton(false);
   };
 
-  const clickOnAddColumnButton = (column) => {
+  const clickOnAddColumnButton = async (column) => {
     if (columns.length < 5 && column) {
-      addColumnAsyncCall(column);
+      await addColumnAsyncCall(column);
     }
     setShowButton(true);
-  };
-
-  const removeColum = (id) => {
-    //setColumns(columns.filter((col) => col.id !== id));
   };
 
   const addColumnAsyncCall = async (column) => {
@@ -71,6 +104,7 @@ const App = () => {
       const responce = await axios.post("http://localhost:3000/columns", column);
 
       if (responce.status === 201) {
+        getColumnsSuccess();
         await getColumnsAsync();
       } else {
         dispatch(postColumnFailure("Oops!"));
@@ -80,22 +114,68 @@ const App = () => {
     }
   };
 
+  const removeColum = async (itemId) => {
+    try {
+      dispatch(deleteColumn());
+
+      let responce = await axios.delete(`http://localhost:3000/columns/${itemId}`);
+
+      if (responce.status === 200) {
+        deleteColumnSuccess();
+        await getColumnsAsync();
+      } else {
+        dispatch(deleteColumnFailure("Oops!"));
+      }
+    } catch (err) {
+      dispatch(deleteColumnFailure("Oops!"));
+    }
+  };
+
+  const addCardAsyncCall = async (card) => {
+    try {
+      dispatch(postCard());
+
+      const responce = await axios.post("http://localhost:3000/cards", card);
+
+      if (responce.status === 201) {
+        postCardSuccess();
+        await getCardsAsync();
+      } else {
+        dispatch(postCardFailure("Oops!"));
+      }
+    } catch (err) {
+      dispatch(postCardFailure("Oops!"));
+    }
+  };
+
   const openCreateCard = (columnId) => {
     setShowCreateCardModal(true);
     setCreateCardColumnId(columnId);
   };
 
-  const addCard = (card) => {
+  const addCard = async (card) => {
     if (cards.length < 6 && card) {
       card.columnId = createCardColumnId;
-      cards.push(card);
-      setCards(cards);
+      await addCardAsyncCall(card);
     }
     setShowCreateCardModal(false);
   };
 
-  const removeCard = (id) => {
-    setCards(cards.filter((c) => c.id !== id));
+  const removeCard = async (id) => {
+    try {
+      dispatch(deleteCard());
+
+      let responce = await axios.delete(`http://localhost:3000/cards/${id}`);
+
+      if (responce.status === 200) {
+        deleteCardSuccess();
+        await getCardsAsync();
+      } else {
+        dispatch(deleteCardFailure("Oops!"));
+      }
+    } catch (err) {
+      dispatch(deleteCardFailure("Oops!"));
+    }
   };
 
   const openCard = (cardId) => {
@@ -126,20 +206,28 @@ const App = () => {
             columnName={columns.filter((x) => x.id === createCardColumnId)[0].name}
           />
         ) : null}
-        {columns.map((column) => {
-          return (
-            <Column
-              key={column.id}
-              id={column.id}
-              cardValues={cards.filter((x) => x.columnId === column.id)}
-              name={column.name}
-              removeColumn={removeColum}
-              openCreateCard={openCreateCard}
-              removeCard={removeCard}
-              openCard={openCard}
-            />
-          );
-        })}
+        <DragDropContext>
+          {columns.map((column) => {
+            return (
+              <Droppable key={column.id} droppableId={column.id}>
+                {(provided) => (
+                  <Column
+                    key={column.id}
+                    id={column.id}
+                    cardValues={cards.filter((x) => x.columnId === column.id)}
+                    name={column.name}
+                    removeColumn={removeColum}
+                    openCreateCard={openCreateCard}
+                    removeCard={removeCard}
+                    openCard={openCard}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  />
+                )}
+              </Droppable>
+            );
+          })}
+        </DragDropContext>
         {showButton ? (
           <ColumnButton onClick={clickOnShowColunmButton} />
         ) : (

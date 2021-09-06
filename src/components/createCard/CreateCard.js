@@ -40,7 +40,7 @@ const CreateCard = ({ columnName, addCard }) => {
         <textarea
           className="create-card-description"
           description={description}
-          onChange={(event) => setDescription(event.target.description)}
+          onChange={(event) => setDescription(event.target.value)}
         />
         <button className="create-card-save-btn" onClick={saveCard}>
           Save
