@@ -1,4 +1,5 @@
 import { ACTION_TYPES } from "./Consts.js";
+import { reorder } from "./utils";
 
 const initialState = {
   user: {},
@@ -174,6 +175,35 @@ const reducer = (state = initialState, action) => {
       ...state,
       loading: false,
       error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.PUT_CARD_START) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.PUT_CARD_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.PUT_CARD_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.REORDER_CARDS) {
+    return {
+      ...state,
+      cards: reorder(state.cards, action.payload.startIndex, action.payload.endIndex),
     };
   }
 

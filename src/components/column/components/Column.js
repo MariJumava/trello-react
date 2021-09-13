@@ -5,7 +5,7 @@ import Card from "../../card/Card";
 import "./Column.css";
 import ColumnHeader from "./column-header/ColumnHeader";
 
-const Column = React.forwardRef((props, ref) => (
+const Column = React.forwardRef((props, ref, placeholder) => (
   <div ref={ref} className="column-wrap">
     <div>
       <ColumnHeader
@@ -34,13 +34,14 @@ const Column = React.forwardRef((props, ref) => (
                   props.removeCard(cardValue.id);
                 }}
                 ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
+                draggableProps={provided.draggableProps}
+                dragHandleProps={provided.dragHandleProps}
               />
             )}
           </Draggable>
         );
       })}
+      {placeholder}
     </div>
   </div>
 ));

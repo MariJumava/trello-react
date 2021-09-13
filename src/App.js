@@ -7,31 +7,27 @@ import CreateColumn from "./components/create-column-form/CreateColumn";
 import CreateCard from "./components/createCard/CreateCard";
 import OpenCard from "./components/openCard/OpenCard";
 import HeaderApp from "./components/headerApp/HeaderApp";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, connect } from "react-redux";
+import { getColumnsFailure, getCardsFailure, reorderCard } from "./redux/actions";
 import {
-  deleteCard,
-  deleteCardFailure,
-  deleteCardSuccess,
-  deleteColumn,
-  deleteColumnFailure,
-  deleteColumnSuccess,
-  getColumns,
-  getColumnsFailure,
-  getColumnsSuccess,
-  postCardSuccess,
-  postColumn,
-  postColumnFailure,
-} from "./redux/actions";
-import {
-  getCards,
-  getCardsSuccess,
-  getCardsFailure,
-  postCard,
-  postCardFailure,
-} from "./redux/actions";
-import axios from "axios";
+  getColumnsAsync,
+  getCardsAsync,
+  saveEditableCard,
+  addColumnAsyncCall,
+  addCardAsyncCall,
+  removeColum,
+  removeCard,
+} from "./redux/thunk";
 
-const App = () => {
+const App = ({
+  saveEditedCard,
+  getColumns,
+  getCards,
+  addColumn,
+  addCardAsync,
+  onRemoveColumn,
+  onRemoveCard,
+}) => {
   const [showButton, setShowButton] = useState(true);
   const columns = useSelector((state) => state.columns);
   const cards = useSelector((state) => state.cards);
@@ -42,22 +38,18 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const getColumnsAsync = async () => {
-    dispatch(getColumns());
+  const saveCard = (header, description, estimate) => {
+    const card = cards.filter((x) => x.id === selectedCardId)[0];
+    card.header = header;
+    card.description = description;
+    card.estimate = estimate;
 
-    const responce = await axios.get("http://localhost:3000/columns");
-
-    if (responce.status === 200) {
-      const columns = responce.data;
-      dispatch(getColumnsSuccess(columns));
-    } else {
-      dispatch(getColumnsFailure("ERROR"));
-    }
+    saveEditedCard(card);
   };
 
   useEffect(() => {
     try {
-      getColumnsAsync();
+      getColumns();
     } catch (error) {
       dispatch(getColumnsFailure("ERROR"));
     }
@@ -66,25 +58,12 @@ const App = () => {
 
   useEffect(() => {
     try {
-      getCardsAsync();
+      getCards();
     } catch (error) {
       dispatch(getCardsFailure("ERROR"));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const getCardsAsync = async () => {
-    dispatch(getCards());
-
-    const responce = await axios.get("http://localhost:3000/cards");
-
-    if (responce.status === 200) {
-      const cards = responce.data;
-      dispatch(getCardsSuccess(cards));
-    } else {
-      dispatch(getCardsFailure("ERROR"));
-    }
-  };
 
   const clickOnShowColunmButton = () => {
     setShowButton(false);
@@ -92,60 +71,9 @@ const App = () => {
 
   const clickOnAddColumnButton = async (column) => {
     if (columns.length < 5 && column) {
-      await addColumnAsyncCall(column);
+      await addColumn(column);
     }
     setShowButton(true);
-  };
-
-  const addColumnAsyncCall = async (column) => {
-    try {
-      dispatch(postColumn());
-
-      const responce = await axios.post("http://localhost:3000/columns", column);
-
-      if (responce.status === 201) {
-        getColumnsSuccess();
-        await getColumnsAsync();
-      } else {
-        dispatch(postColumnFailure("Oops!"));
-      }
-    } catch (err) {
-      dispatch(postColumnFailure("Oops!"));
-    }
-  };
-
-  const removeColum = async (itemId) => {
-    try {
-      dispatch(deleteColumn());
-
-      let responce = await axios.delete(`http://localhost:3000/columns/${itemId}`);
-
-      if (responce.status === 200) {
-        deleteColumnSuccess();
-        await getColumnsAsync();
-      } else {
-        dispatch(deleteColumnFailure("Oops!"));
-      }
-    } catch (err) {
-      dispatch(deleteColumnFailure("Oops!"));
-    }
-  };
-
-  const addCardAsyncCall = async (card) => {
-    try {
-      dispatch(postCard());
-
-      const responce = await axios.post("http://localhost:3000/cards", card);
-
-      if (responce.status === 201) {
-        postCardSuccess();
-        await getCardsAsync();
-      } else {
-        dispatch(postCardFailure("Oops!"));
-      }
-    } catch (err) {
-      dispatch(postCardFailure("Oops!"));
-    }
   };
 
   const openCreateCard = (columnId) => {
@@ -156,26 +84,9 @@ const App = () => {
   const addCard = async (card) => {
     if (cards.length < 6 && card) {
       card.columnId = createCardColumnId;
-      await addCardAsyncCall(card);
+      await addCardAsync(card);
     }
     setShowCreateCardModal(false);
-  };
-
-  const removeCard = async (id) => {
-    try {
-      dispatch(deleteCard());
-
-      let responce = await axios.delete(`http://localhost:3000/cards/${id}`);
-
-      if (responce.status === 200) {
-        deleteCardSuccess();
-        await getCardsAsync();
-      } else {
-        dispatch(deleteCardFailure("Oops!"));
-      }
-    } catch (err) {
-      dispatch(deleteCardFailure("Oops!"));
-    }
   };
 
   const openCard = (cardId) => {
@@ -189,6 +100,22 @@ const App = () => {
 
   const getSelectedCard = () => cards.filter((x) => x.id === selectedCardId)[0];
 
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      dispatch(reorderCard(source.index, destination.index));
+    } else {
+      const card = cards.filter((x) => x.id === result.draggableId)[0];
+      card.columnId = destination.droppableId;
+      saveEditedCard(card);
+    }
+  };
+
   return (
     <div className="App">
       <HeaderApp />
@@ -198,6 +125,7 @@ const App = () => {
             card={getSelectedCard()}
             columnName={columns.filter((x) => x.id === getSelectedCard().columnId)[0].name}
             closeOpenCard={closeOpenCard}
+            saveEditableCard={saveCard}
           />
         ) : null}
         {showCreateCardModal ? (
@@ -206,7 +134,7 @@ const App = () => {
             columnName={columns.filter((x) => x.id === createCardColumnId)[0].name}
           />
         ) : null}
-        <DragDropContext>
+        <DragDropContext onDragEnd={onDragEnd}>
           {columns.map((column) => {
             return (
               <Droppable key={column.id} droppableId={column.id}>
@@ -216,12 +144,13 @@ const App = () => {
                     id={column.id}
                     cardValues={cards.filter((x) => x.columnId === column.id)}
                     name={column.name}
-                    removeColumn={removeColum}
+                    removeColumn={onRemoveColumn}
                     openCreateCard={openCreateCard}
-                    removeCard={removeCard}
+                    removeCard={onRemoveCard}
                     openCard={openCard}
                     {...provided.droppableProps}
                     ref={provided.innerRef}
+                    placeholder={provided.placeholder}
                   />
                 )}
               </Droppable>
@@ -238,4 +167,18 @@ const App = () => {
   );
 };
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveEditedCard: (card) => {
+      dispatch(saveEditableCard(card));
+    },
+    getColumns: () => dispatch(getColumnsAsync()),
+    getCards: () => dispatch(getCardsAsync()),
+    addColumn: (column) => dispatch(addColumnAsyncCall(column)),
+    addCardAsync: (card) => dispatch(addCardAsyncCall(card)),
+    onRemoveColumn: (columnId) => dispatch(removeColum(columnId)),
+    onRemoveCard: (id) => dispatch(removeCard(id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);

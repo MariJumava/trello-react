@@ -17,7 +17,6 @@
 }
 
 .column-title {
-    padding-right: calc(3px + 1vw);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: calc(3px + 1.1vw);
     font-weight: 600;

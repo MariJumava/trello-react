@@ -141,3 +141,32 @@ export const deleteCardFailure = (error) => {
     payload: error,
   };
 };
+
+export const putCard = () => {
+  return {
+    type: ACTION_TYPES.PUT_CARD_START,
+  };
+};
+
+export const putCardSuccess = () => {
+  return {
+    type: ACTION_TYPES.PUT_CARD_SUCCESS,
+  };
+};
+
+export const putCardFailure = (error) => {
+  return {
+    type: ACTION_TYPES.PUT_CARD_FAILURE,
+    payload: error,
+  };
+};
+
+export const reorderCard = (startIndex, endIndex) => {
+  return {
+    type: ACTION_TYPES.REORDER_CARDS,
+    payload: {
+      startIndex,
+      endIndex,
+    },
+  };
+};

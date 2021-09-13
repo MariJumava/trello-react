@@ -22,6 +22,72 @@
       "password": "5678"
     }
   ],
-  "columns": [],
-  "cards": []
+  "columns": [
+    {
+      "id": "1",
+      "name": "ToDo"
+    },
+    {
+      "id": "2",
+      "name": "in Progress"
+    },
+    {
+      "id": "8",
+      "name": "Done"
+    }
+  ],
+  "cards": [
+    {
+      "id": "5",
+      "header": "YOU",
+      "description": "hello Mari",
+      "dateCreated": "2021-09-11T06:55:22.874Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "10h",
+      "columnId": "2"
+    },
+    {
+      "id": "4",
+      "header": "AYY",
+      "description": "ldkuhg",
+      "dateCreated": "2021-09-13T12:03:48.371Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "10h",
+      "columnId": "1"
+    },
+    {
+      "id": "6",
+      "header": "tata",
+      "description": "",
+      "dateCreated": "2021-09-13T12:04:21.360Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "2",
+      "columnId": "1"
+    },
+    {
+      "id": "7",
+      "header": "papa",
+      "description": "ljfnvv",
+      "dateCreated": "2021-09-13T12:04:39.561Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "17h",
+      "columnId": "1"
+    }
+  ]
 }

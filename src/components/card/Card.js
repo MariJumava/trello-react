@@ -1,18 +1,35 @@
 import React from "react";
 import "./Card.css";
 import Estimate from "./components/estimate/Estimate";
-import LabelComponent from "./components/label/LabelComponent";
 import AssignedUser from "./components/assignedUser/AssignedUser";
 
 const Card = React.forwardRef(
-  ({ header, dateCreated, estimate, labels, assignedUser, removeCard, openCard }, ref, ...rest) => {
+  (
+    {
+      header,
+      dateCreated,
+      estimate,
+      assignedUser,
+      removeCard,
+      openCard,
+      draggableProps,
+      dragHandleProps,
+    },
+    ref
+  ) => {
     const clickOnRemoveButton = (e) => {
       e.stopPropagation();
       removeCard();
     };
 
     return (
-      <div ref={ref} className="card-wrap" onClick={openCard} {...rest}>
+      <div
+        ref={ref}
+        className="card-wrap"
+        onClick={openCard}
+        {...draggableProps}
+        {...dragHandleProps}
+      >
         <header className="card-header">
           <div className="vertical-line"></div>
           <div className="card-title-with-btn">
@@ -35,12 +52,7 @@ const Card = React.forwardRef(
             </div>
           </div>
         </header>
-        <div className="card-label-wrap">
-          {labels &&
-            labels.map((label) => {
-              return <LabelComponent key={label.id} label={label} />;
-            })}
-        </div>
+        <div className="card-label-wrap"></div>
         <AssignedUser user={assignedUser} />
       </div>
     );
