@@ -110,7 +110,8 @@ const App = ({
     if (source.droppableId === destination.droppableId) {
       dispatch(reorderCard(source.index, destination.index));
     } else {
-      const card = cards.filter((x) => x.id === result.draggableId)[0];
+      const [draggedElement] = cards.splice(source.index, 1);
+      const card = cards.splice(destination.index, 0, draggedElement);
       card.columnId = destination.droppableId;
       saveEditedCard(card);
     }
