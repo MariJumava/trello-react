@@ -1,5 +1,7 @@
 .App {
   min-height: 920px;
+  min-width: 100vw;
+  overflow-x: auto;
   padding: 80px 50px;
   background-image: url(https://oboi247.ru/img/post/t-17/0.jpg);
 }

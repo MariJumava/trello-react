@@ -18,27 +18,80 @@
       "id": 3,
       "email": "bob@gmail.com",
       "displayName": "Bob",
-      "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png",
+      "avatar": "http://pngimg.com/uploads/avatar/avatar_PNG50.png",
       "password": "5678"
     }
   ],
   "columns": [
     {
-      "id": 4,
-      "name": "test column"
-    },
-    {
       "id": "1",
-      "name": "sadasds"
+      "name": "ToDo"
     },
     {
       "id": "2",
-      "name": "asdasdasd"
+      "name": "in Progress"
     },
     {
-      "id": "3",
-      "name": "sadasd"
+      "id": "8",
+      "name": "Done"
+    },
+    {
+      "id": "9",
+      "name": "Realise"
     }
   ],
-  "card": []
+  "cards": [
+    {
+      "id": "5",
+      "header": "YOU",
+      "description": "hello Mari",
+      "dateCreated": "2021-09-11T06:55:22.874Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "10h",
+      "columnId": "8"
+    },
+    {
+      "id": "6",
+      "header": "tata",
+      "description": "",
+      "dateCreated": "2021-09-13T12:04:21.360Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "2",
+      "columnId": "1"
+    },
+    {
+      "id": "8",
+      "header": "hello",
+      "description": "world",
+      "dateCreated": "2021-09-28T13:05:23.765Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "12h",
+      "columnId": "1"
+    },
+    {
+      "id": "10",
+      "header": "It's a beautiful",
+      "description": "Life OOOOOOOOOO",
+      "dateCreated": "2021-09-28T13:07:21.673Z",
+      "assignedUser": {
+        "id": 1,
+        "displayName": "Mari",
+        "avatar": "https://image.flaticon.com/icons/png/512/194/194938.png"
+      },
+      "estimate": "1h",
+      "columnId": "8"
+    }
+  ]
 }

@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Column from "./components/column/components/Column";
 import "./App.css";
 import ColumnButton from "./components/column-button/ColumnButton";
 import CreateColumn from "./components/create-column-form/CreateColumn";
 import CreateCard from "./components/createCard/CreateCard";
 import OpenCard from "./components/openCard/OpenCard";
-import HeaderApp from "./components/HeaderApp";
-import { useDispatch, useSelector } from "react-redux";
+import HeaderApp from "./components/headerApp/HeaderApp";
+import { useDispatch, useSelector, connect } from "react-redux";
+import { getColumnsFailure, getCardsFailure, reorderCard } from "./redux/actions";
 import {
-  getColumns,
-  getColumnsFailure,
-  getColumnsSuccess,
-  postColumn,
-  postColumnFailure,
-} from "./redux/actions";
-import axios from "axios";
+  getColumnsAsync,
+  getCardsAsync,
+  saveEditableCard,
+  addColumnAsyncCall,
+  addCardAsyncCall,
+  removeColum,
+  removeCard,
+} from "./redux/thunk";
 
-const App = () => {
+const App = ({
+  saveEditedCard,
+  getColumns,
+  getCards,
+  addColumn,
+  addCardAsync,
+  onRemoveColumn,
+  onRemoveCard,
+}) => {
   const [showButton, setShowButton] = useState(true);
   const columns = useSelector((state) => state.columns);
-  const [cards, setCards] = useState([]);
+  const cards = useSelector((state) => state.cards);
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);
   const [createCardColumnId, setCreateCardColumnId] = useState(null);
   const [showOpenCard, setShowOpenCard] = useState(false);
@@ -27,24 +38,29 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const getColumnsAsync = async () => {
-    dispatch(getColumns());
+  const saveCard = (header, description, estimate) => {
+    const card = cards.filter((x) => x.id === selectedCardId)[0];
+    card.header = header;
+    card.description = description;
+    card.estimate = estimate;
 
-    const responce = await axios.get("http://localhost:3000/columns");
-
-    if (responce.status === 200) {
-      const columns = responce.data;
-      dispatch(getColumnsSuccess(columns));
-    } else {
-      dispatch(getColumnsFailure("ERROR"));
-    }
+    saveEditedCard(card);
   };
 
   useEffect(() => {
     try {
-      getColumnsAsync();
+      getColumns();
     } catch (error) {
       dispatch(getColumnsFailure("ERROR"));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    try {
+      getCards();
+    } catch (error) {
+      dispatch(getCardsFailure("ERROR"));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -53,31 +69,11 @@ const App = () => {
     setShowButton(false);
   };
 
-  const clickOnAddColumnButton = (column) => {
+  const clickOnAddColumnButton = async (column) => {
     if (columns.length < 5 && column) {
-      addColumnAsyncCall(column);
+      await addColumn(column);
     }
     setShowButton(true);
-  };
-
-  const removeColum = (id) => {
-    //setColumns(columns.filter((col) => col.id !== id));
-  };
-
-  const addColumnAsyncCall = async (column) => {
-    try {
-      dispatch(postColumn());
-
-      const responce = await axios.post("http://localhost:3000/columns", column);
-
-      if (responce.status === 201) {
-        await getColumnsAsync();
-      } else {
-        dispatch(postColumnFailure("Oops!"));
-      }
-    } catch (err) {
-      dispatch(postColumnFailure("Oops!"));
-    }
   };
 
   const openCreateCard = (columnId) => {
@@ -85,17 +81,12 @@ const App = () => {
     setCreateCardColumnId(columnId);
   };
 
-  const addCard = (card) => {
+  const addCard = async (card) => {
     if (cards.length < 6 && card) {
       card.columnId = createCardColumnId;
-      cards.push(card);
-      setCards(cards);
+      await addCardAsync(card);
     }
     setShowCreateCardModal(false);
-  };
-
-  const removeCard = (id) => {
-    setCards(cards.filter((c) => c.id !== id));
   };
 
   const openCard = (cardId) => {
@@ -109,6 +100,22 @@ const App = () => {
 
   const getSelectedCard = () => cards.filter((x) => x.id === selectedCardId)[0];
 
+  const onDragEnd = (result) => {
+    const { source, destination } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      dispatch(reorderCard(source.index, destination.index));
+    } else {
+      const card = cards.filter((x) => x.id === result.draggableId)[0];
+      card.columnId = destination.droppableId;
+      saveEditedCard(card);
+    }
+  };
+
   return (
     <div className="App">
       <HeaderApp />
@@ -118,6 +125,7 @@ const App = () => {
             card={getSelectedCard()}
             columnName={columns.filter((x) => x.id === getSelectedCard().columnId)[0].name}
             closeOpenCard={closeOpenCard}
+            saveEditableCard={saveCard}
           />
         ) : null}
         {showCreateCardModal ? (
@@ -126,20 +134,29 @@ const App = () => {
             columnName={columns.filter((x) => x.id === createCardColumnId)[0].name}
           />
         ) : null}
-        {columns.map((column) => {
-          return (
-            <Column
-              key={column.id}
-              id={column.id}
-              cardValues={cards.filter((x) => x.columnId === column.id)}
-              name={column.name}
-              removeColumn={removeColum}
-              openCreateCard={openCreateCard}
-              removeCard={removeCard}
-              openCard={openCard}
-            />
-          );
-        })}
+        <DragDropContext onDragEnd={onDragEnd}>
+          {columns.map((column) => {
+            return (
+              <Droppable key={column.id} droppableId={column.id}>
+                {(provided) => (
+                  <Column
+                    key={column.id}
+                    id={column.id}
+                    cardValues={cards.filter((x) => x.columnId === column.id)}
+                    name={column.name}
+                    removeColumn={onRemoveColumn}
+                    openCreateCard={openCreateCard}
+                    removeCard={onRemoveCard}
+                    openCard={openCard}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    placeholder={provided.placeholder}
+                  />
+                )}
+              </Droppable>
+            );
+          })}
+        </DragDropContext>
         {showButton ? (
           <ColumnButton onClick={clickOnShowColunmButton} />
         ) : (
@@ -150,4 +167,18 @@ const App = () => {
   );
 };
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveEditedCard: (card) => {
+      dispatch(saveEditableCard(card));
+    },
+    getColumns: () => dispatch(getColumnsAsync()),
+    getCards: () => dispatch(getCardsAsync()),
+    addColumn: (column) => dispatch(addColumnAsyncCall(column)),
+    addCardAsync: (card) => dispatch(addCardAsyncCall(card)),
+    onRemoveColumn: (columnId) => dispatch(removeColum(columnId)),
+    onRemoveCard: (id) => dispatch(removeCard(id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);

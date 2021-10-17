@@ -3,7 +3,8 @@
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 150px;
+    width: 140px;
+    min-width: 100px;
     min-height: 100px;
     margin: 1.5em auto;
     padding: 1em;
@@ -12,8 +13,7 @@
     border-radius: 3%;
     cursor: grab;
     background-color: white;
-    /* transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out; */
-}
+}    
 
 .card-wrap:hover {
     border-color: #5a08b8;
@@ -32,8 +32,8 @@
 
 .card-title {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: calc(3px + 1vw);
-    margin: 0.2em 0;
+    font-size: calc(2px + 1vw);
+    margin: 0.1em 0;
 }
 
 .card-title-with-btn {

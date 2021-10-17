@@ -3,6 +3,10 @@
     flex-direction: column;
     width: 250px;
     height: fit-content;
+    margin: 10px;
     background-color: rgb(230, 231, 247, 0.3);
 }
 
+.list-cards {
+    margin: 0 10px;
+}

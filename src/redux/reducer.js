@@ -1,8 +1,10 @@
 import { ACTION_TYPES } from "./Consts.js";
+import { reorder } from "./utils";
 
 const initialState = {
   user: {},
   columns: [],
+  cards: [],
   loading: false,
   authorized: false,
   error: "",
@@ -84,6 +86,124 @@ const reducer = (state = initialState, action) => {
       ...state,
       loading: false,
       error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.GET_CARDS_START) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.GET_CARDS_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+      cards: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.GET_CARDS_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.POST_CARD_START) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.POST_CARD_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.POST_CARD_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.DELETE_COLUMN_START) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.DELETE_COLUMN_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.DELETE_COLUMN_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.DELETE_CARD_START) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.DELETE_CARD_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.DELETE_CARD_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.PUT_CARD_START) {
+    return {
+      ...state,
+      loading: true,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.PUT_CARD_SUCCESS) {
+    return {
+      ...state,
+      loading: false,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.PUT_CARD_FAILURE) {
+    return {
+      ...state,
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  if (action.type === ACTION_TYPES.REORDER_CARDS) {
+    return {
+      ...state,
+      cards: reorder(state.cards, action.payload.startIndex, action.payload.endIndex),
     };
   }
 

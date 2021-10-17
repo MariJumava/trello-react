@@ -1,6 +1,7 @@
 .column-form {
-    width: 20%;
-    height: 20%;
+    min-width: 150px;
+    height: fit-content;
+    margin-top: 10px;
     background-color: rgb(230, 231, 247, 0.1);;
 }
 
@@ -19,7 +20,7 @@
 }
 
 .close-form-btn {
-    width: 49%;
+    width: 30%;
     padding: 0.3em;
     font-size: calc(6px + 1vw);
     font-weight: 800;

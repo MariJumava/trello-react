@@ -14,10 +14,12 @@
     top: 20%;
     left: 30%;
     z-index: 9000;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     width: 33%;
     padding: 1.2em;
+    margin: 10px;
     background: #f2f6fa;
     border: #d2defb 2px solid;
 }
@@ -53,13 +55,59 @@
 }
 
 .open-card-title-description {
+    margin: 15px 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: calc(4px + 1vw);
     font-weight: 600;
 }
 
 .open-card-description {
+    margin: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: calc(3px + 1vw);;
+    font-size: calc(2px + 1vw);;
     font-weight: 400;
+}
+
+.open-card-editable-description {
+    width: 80%;
+    min-height: 60px;
+}
+
+.open-card-editable-input {
+    width: 30%;
+    min-height: 20px;
+}
+
+.open-card-title-estimate {
+    margin: 15px 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: calc(3px + 1vw);
+    font-weight: 600;
+}
+
+.open-card-estimate {
+    margin-left: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: calc(2px + 1vw);;
+    font-weight: 400;
+}
+
+.open-card-edit{
+    width: 10%;
+    padding: 0.2em;
+    font-size: calc(1px + 1vw);
+    color: #fff;
+    background: #6411AD;
+    border-radius: 5px;
+    border: none;
+}
+
+.open-card-save {
+    width: 10%;
+    padding: 0.3em;
+    font-size: calc(3px + 1vw);
+    color: #fff;
+    background: #6411AD;
+    border-radius: 5px;
+    border: none;
 }
